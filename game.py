@@ -17,14 +17,13 @@ class Game:
         self.next_cells = set()
 
     def step(self):
-        # calculate surviving cells
+        # calc surviving cells
         self.next_cells = {c for c in self.alive_cells if self.is_alive(c)}
-
+        # calc new cells (from dead ones)
         self.calc_new_cells()
-
         self.alive_cells = self.next_cells
-        print(self)
         self.tick += 1
+        print(self)
 
     def is_alive(self, cell):
         x, y = cell
@@ -41,12 +40,10 @@ class Game:
         for x, y in self.alive_cells:
             for dx, dy in coords: 
                 neighbor = (x + dx, y + dy)
-                if neighbor in self.next_cells: continue
-                elif neighbor in checked_cells: continue
-                if self.is_alive(neighbor):
+                if neighbor in self.next_cells or neighbor in checked_cells: continue
+                elif self.is_alive(neighbor):
                     self.next_cells.add(neighbor)    
                 checked_cells.add(neighbor)
-
 
     def __repr__(self):
         board = f"tick: {self.tick}\n"
@@ -61,14 +58,3 @@ if __name__ == '__main__':
     while True:
         input("Press Enter to continue.")
         g.step()
-
-            
-
-
-
-
-
-
-
-
-
